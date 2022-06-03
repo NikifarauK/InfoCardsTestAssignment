@@ -1,0 +1,13 @@
+[
+  {
+    "Id": 0,
+    "Name": null,
+    "Base64Image": null
+  },
+  {
+    "Id": 1,
+    "Name": "name",
+    "Base64Image": "123456789"
+  }
+
+]
