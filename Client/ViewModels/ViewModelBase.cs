@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Client.ViewModels
 {
-    internal abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -18,7 +18,8 @@ namespace Client.ViewModels
         }
 
         protected virtual bool SetProperty<T>(
-			ref T field, T value,
+			ref T field,
+			T value,
 			[CallerMemberName] string propertyName = "",
 			Action onChanged = null,
 			Func<T, T, bool> validateValue = null)

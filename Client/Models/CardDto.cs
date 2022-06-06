@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shared
+namespace Client.Models
 {
     public class CardDto
     {

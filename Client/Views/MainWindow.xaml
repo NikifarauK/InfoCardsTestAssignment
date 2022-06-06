@@ -4,16 +4,70 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
-        xmlns:vm="clr-namespace:Client.ViewModels"        mc:Ignorable="d"
-        Title="{Binding Title}" Height="450" Width="800" Background="#173467">
+        xmlns:serv="clr-namespace:Client.Services"
+        xmlns:vm="clr-namespace:Client.ViewModels" mc:Ignorable="d"
+        Title="{Binding Title}" 
+        Height="450" Width="{Binding TheWindowWidth, Mode=TwoWay}" Background="#274467">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    <StackPanel>
-        <TextBox HorizontalAlignment="Left" Margin="16,18,0,0" TextWrapping="Wrap" 
-                 Text="{Binding Enter, UpdateSourceTrigger=PropertyChanged}"
-                 VerticalAlignment="Top" Width="120"/>
-        <Label Content="{Binding Enter}" HorizontalAlignment="Left"
-               Margin="15" Height="29" Width="342" RenderTransformOrigin="-0.298,0.968"/>
-    </StackPanel>
+    <Grid VerticalAlignment="Stretch">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF0C0F1F" Offset="0"/>
+                <GradientStop Color="#FF344392" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" MinHeight="1"/>
+            <RowDefinition Height="1*" MinHeight="30"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0"
+                ItemsSource="{Binding Cards}" 
+                VerticalAlignment="Stretch" SelectionMode="Multiple"
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                >
+            <ListView.Resources>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                </Style>
+            </ListView.Resources>
+            <ListView.Background>
+                <ImageBrush/>
+            </ListView.Background>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid
+                        Columns="{Binding Path=DataContext.Columns, Mode=OneWay,
+                        RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Height="100" MinHeight="105" MaxHeight="130" Width="220" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition MinHeight="35" MaxHeight="50"/>
+                            <RowDefinition Height="80"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="{Binding Name}" TextWrapping="Wrap"
+                               Foreground="AliceBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Image Grid.Row="1" Source="{Binding Image}" VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Grid.Row="1"
+            Orientation="Horizontal" Height="30" VerticalAlignment="Bottom" >
+            <Button Content="Refresh" Command="{Binding RefreshCommand}" Margin="5" Height="20" Width="60"/>
+            <Button Content="Sort" Command="{Binding SortCommand}" Margin="5" Height="20" Width="60"/>
+            <Button Content="Add" Command="{Binding AddCommand}" Margin="5" Height="20" Width="60"/>
+            <Button Content="Update" IsEnabled="{Binding SingleSelected}"
+                    Command="{Binding UpdateCommand}"
+                    Margin="5" Height="20" Width="60"/>
+            <Button Content="Delete" IsEnabled="{Binding MultipleSelected}"
+                    Command="{Binding DeleteCommand}"
+                    Margin="5" Height="20" Width="60"/>
+        </StackPanel>
+    </Grid>
 </Window>
